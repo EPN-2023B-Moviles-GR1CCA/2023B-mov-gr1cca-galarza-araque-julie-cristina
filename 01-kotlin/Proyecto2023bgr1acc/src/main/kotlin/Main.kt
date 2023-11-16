@@ -117,7 +117,26 @@ abstract class Numeros(//Constructor PRIMARIO
     }
 }
 
+class Suma( //Constructor primario suma
+    uno: Int, //apametro
+    dos: Int //parametro
+): Numeros(uno, dos){
+    init {//bloque constructor
+        this.numeroUno; numeroUno;
+        this.numeroDos; numeroDos;
+    }
 
+    constructor(// Segundo constructor
+        uno: Int?, // parametros
+        dos: Int // parametros
+):this( //llamada constructor primario
+    if (uno == null) 0 else uno,
+    dos
+){//si necesitamos bloque de codigo lo usamos
+    numeroUno;
+}
+
+}
 
 
 // void -> Unit
