@@ -63,8 +63,9 @@ fun main(){
 
     calcularSueldo(bonoEspecial = 20.00, sueldo = 10.00, tasa = 14.00)//parametros nombrados
 
-
-
+    val sumaUno = Suma(1,1)
+    val sumaDos = Suma(null, 1)
+    val sumaTres = Suma(1,null)
 
 
 
