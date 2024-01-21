@@ -1,0 +1,1 @@
+[{"idLibro":2,"idAutor":1,"titulo":"El cuervo","fechaPublicacion":"1845-01-29","genero":"Poema","precio":11.7,"bestSeller":false},{"idLibro":3,"idAutor":2,"titulo":"Harry Potter y la cámara secreta","fechaPublicacion":"1998-07-02","genero":"Literatura fantástica","precio":14.5,"bestSeller":true}]
