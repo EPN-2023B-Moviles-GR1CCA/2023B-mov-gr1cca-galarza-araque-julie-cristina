@@ -19,9 +19,6 @@
             android:name=".DesplegarLibros"
             android:exported="false" />
         <activity
-            android:name=".CrudAutor"
-            android:exported="false" />
-        <activity
             android:name=".CrudLibro"
             android:exported="false" />
         <activity
