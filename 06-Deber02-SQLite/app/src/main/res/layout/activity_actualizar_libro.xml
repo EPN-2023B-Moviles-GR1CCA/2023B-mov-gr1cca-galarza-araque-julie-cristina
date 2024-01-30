@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/id_layout_actualizar_libro"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ActualizarLibro">
+
+    <TextView
+        android:id="@+id/tv_actualizar_libro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Actualizar Libro"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.474"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.069" />
+
+    <EditText
+        android:id="@+id/input_precio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:ems="10"
+        android:hint="Precio"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="@+id/input_genero"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/input_genero"
+        app:layout_constraintTop_toBottomOf="@+id/input_genero" />
+
+    <EditText
+        android:id="@+id/input_bestSeller"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:ems="10"
+        android:hint="Best Seller"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="@+id/input_precio"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/input_precio"
+        app:layout_constraintTop_toBottomOf="@+id/input_precio" />
+
+    <Button
+        android:id="@+id/btn_actualizar_libro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:text="Actualizar"
+        app:layout_constraintEnd_toEndOf="@+id/input_bestSeller"
+        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintStart_toStartOf="@+id/input_bestSeller"
+        app:layout_constraintTop_toBottomOf="@+id/input_bestSeller" />
+
+    <EditText
+        android:id="@+id/input_titulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Titulo"
+        app:layout_constraintEnd_toEndOf="@+id/tv_actualizar_libro"
+        app:layout_constraintHorizontal_bias="0.692"
+        app:layout_constraintStart_toStartOf="@+id/tv_actualizar_libro"
+        app:layout_constraintTop_toBottomOf="@+id/tv_actualizar_libro" />
+
+    <EditText
+        android:id="@+id/input_fechaPublicacion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Fecha de publicación"
+        app:layout_constraintEnd_toEndOf="@+id/input_titulo"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/input_titulo"
+        app:layout_constraintTop_toBottomOf="@+id/input_titulo" />
+
+    <EditText
+        android:id="@+id/input_genero"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text="genero"
+        app:layout_constraintEnd_toEndOf="@+id/input_fechaPublicacion"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/input_fechaPublicacion"
+        app:layout_constraintTop_toBottomOf="@+id/input_fechaPublicacion" />
+</androidx.constraintlayout.widget.ConstraintLayout>

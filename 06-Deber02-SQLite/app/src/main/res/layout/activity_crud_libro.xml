@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/id_layout_libro"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CrudLibro">
+
+    <EditText
+        android:id="@+id/input_creartitulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:ems="10"
+        android:hint="Título"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="@+id/input_idLibro"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/input_idLibro"
+        app:layout_constraintTop_toBottomOf="@+id/input_idLibro" />
+
+    <EditText
+        android:id="@+id/input_idLibro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:ems="10"
+        android:hint="ID libro"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="@+id/tv_crearLibro"
+        app:layout_constraintHorizontal_bias="0.431"
+        app:layout_constraintStart_toStartOf="@+id/tv_crearLibro"
+        app:layout_constraintTop_toBottomOf="@+id/tv_crearLibro" />
+
+    <TextView
+        android:id="@+id/tv_crearLibro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Añadir Libro"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.091" />
+
+    <EditText
+        android:id="@+id/input_crearFechaPublicacion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:ems="10"
+        android:hint="Fecha de publicación"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="@+id/input_creartitulo"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/input_creartitulo"
+        app:layout_constraintTop_toBottomOf="@+id/input_creartitulo" />
+
+    <EditText
+        android:id="@+id/input_crearGenero"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:ems="10"
+        android:hint="Género"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="@+id/input_crearFechaPublicacion"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/input_crearFechaPublicacion"
+        app:layout_constraintTop_toBottomOf="@+id/input_crearFechaPublicacion" />
+
+    <EditText
+        android:id="@+id/input_crearPrecio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:ems="10"
+        android:hint="Precio"
+        android:inputType="numberDecimal"
+        app:layout_constraintEnd_toEndOf="@+id/input_crearGenero"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/input_crearGenero"
+        app:layout_constraintTop_toBottomOf="@+id/input_crearGenero" />
+
+    <EditText
+        android:id="@+id/input_crearBestSeller"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:ems="10"
+        android:hint="Best Seller"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="@+id/input_crearPrecio"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/input_crearPrecio"
+        app:layout_constraintTop_toBottomOf="@+id/input_crearPrecio" />
+
+    <Button
+        android:id="@+id/btn_crearLibro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:text="Crear"
+        app:layout_constraintEnd_toEndOf="@+id/input_crearBestSeller"
+        app:layout_constraintHorizontal_bias="0.467"
+        app:layout_constraintStart_toStartOf="@+id/input_crearBestSeller"
+        app:layout_constraintTop_toBottomOf="@+id/input_crearBestSeller" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
