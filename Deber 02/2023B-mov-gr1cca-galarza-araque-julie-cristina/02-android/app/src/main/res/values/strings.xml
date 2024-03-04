@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Gr1accjcga2023b</string>
+    <string name="texto_saludo">Hello</string>
+    <color name="color_saludo">#FF03A9F4</color>
+    <color name="color_saludo_texto">#FFFFFF</color>
+
+    <string-array name="string_array_opciones_dialogo">
+        <item>Lunes</item>
+        <item>Martes</item>
+        <item>Miercoles</item>
+    </string-array>
+    <string name="title_activity_google_maps_inicio">GoogleMapsInicio</string>
+</resources>

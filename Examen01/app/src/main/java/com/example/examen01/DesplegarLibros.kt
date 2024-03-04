@@ -1,8 +1,6 @@
 package com.example.examen01
 
-import android.content.DialogInterface
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.ContextMenu
 import android.view.MenuItem
@@ -10,162 +8,104 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
-import android.widget.EditText
 import android.widget.ListView
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
-import androidx.core.view.get
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 
 class DesplegarLibros : AppCompatActivity() {
-    private lateinit var listaLibro: ListView
-    private lateinit var adaptador: ArrayAdapter<Libro>
-    private lateinit var btnAnadirLibro: Button
-    var listaLibroDB = EBaseDeDatos.tablaLibro!!.consultarLibros()
+    private lateinit var listaLibrosView: ListView
+    private lateinit var adaptador: ArrayAdapter<String>
+    private var listaLibros: ArrayList<String> = ArrayList()
+    private var listaLibrosIds: MutableList<String> = mutableListOf()
 
-    companion object{
-        var idLibroSeleccionado = 0
-    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_desplegar_libros)
 
+        val idAutor = intent.getStringExtra("idAutor") ?: return
+        val nombreAutor = intent.getStringExtra("nombre")
+        findViewById<TextView>(R.id.tv_NombreAutorDesL).text = nombreAutor
 
-        val idAutor = intent.extras?.getString("idAutor")
-        val nombre = intent.extras?.getString("nombre")
-        val nombreAutor = findViewById<TextView>(R.id.tv_NombreAutorDesL)
+        listaLibrosView = findViewById(R.id.lv_list_view_libros)
+        adaptador = ArrayAdapter(this, android.R.layout.simple_list_item_1, listaLibros)
+        listaLibrosView.adapter = adaptador
 
-        nombreAutor.setText(nombre)
+        cargarListaLibros(idAutor)
 
-        listaLibro = findViewById(R.id.lv_list_view_libros)
-
-
-
-
-
-        cargarLibros(idAutor!!.toInt())
-
-        val btnAnadirLibro = findViewById<Button>(R.id.btn_anadir_libro)
-            .setOnClickListener {
-                val extras = Bundle()
-                extras.putString("idAutor", idAutor.toString())
-                irEdicionLibro(CrudLibro::class.java, extras)
-
+        findViewById<Button>(R.id.btn_anadir_libro).setOnClickListener {
+            val intent = Intent(this, CrudLibro::class.java).apply {
+                putExtra("idAutor", idAutor)
+            }
+            startActivity(intent)
         }
 
-        registerForContextMenu(listaLibro)
-
-
-
+        registerForContextMenu(listaLibrosView)
     }
-    var posicionItemSeleccionado = 0
 
-    override fun onCreateContextMenu(
-        menu: ContextMenu?,
-        v: View?,
-        menuInfo: ContextMenu.ContextMenuInfo?
-    ) {
+    private fun cargarListaLibros(idAutor: String) {
+        BDD.bddAplicacion?.obtenerLibrosPorAutor(idAutor) { libros ->
+            listaLibros.clear()
+            listaLibrosIds.clear()
+            libros.forEach { libro ->
+                listaLibros.add(libro.titulo ?: "Sin título")
+                listaLibrosIds.add(libro.idLibro.toString())
+            }
+            adaptador.notifyDataSetChanged()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val idAutor = intent.getStringExtra("idAutor")
+        idAutor?.let {
+            cargarListaLibros(it) // Recargar la lista de libros cuando la actividad se reanuda
+        }
+    }
+
+    override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo)
-        //llenamos las opciones del menu
-        val inflater = menuInflater
-        inflater.inflate(R.menu.menu_libro, menu)
-        //obtener el id del ArrayListSeleccionado
-        val info = menuInfo as AdapterView.AdapterContextMenuInfo
-        val posicion = info.position
-        posicionItemSeleccionado = posicion
+        menuInflater.inflate(R.menu.menu_libro, menu)
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
-
-        val idLibro = listaLibroDB!!.get(posicionItemSeleccionado).idLibro
-        val idAutor = listaLibroDB!!.get(posicionItemSeleccionado).idAutor
-
-
-        return when (item.itemId) {
+        val info = item.menuInfo as AdapterView.AdapterContextMenuInfo
+        when (item.itemId) {
             R.id.mi_editar -> {
-                mostrarSnackbar("${posicionItemSeleccionado}")
-                val extras = Bundle()
-                extras.putString("idLibro", idLibro.toString())
-                extras.putString("idAutor",idAutor.toString())
-                irEdicionLibro(ActualizarLibro::class.java, extras)
-                true
+                editarLibro(info.position)
+                return true
             }
             R.id.mi_eliminar -> {
-                abrirDialogo()
-                true
+                eliminarLibro(info.position)
+                return true
             }
-            else -> super.onContextItemSelected(item)
         }
-
-
-
+        return super.onContextItemSelected(item)
     }
 
-
-    override fun onResume() {
-        val idAutor = intent.extras?.getString("idAutor")
-        super.onResume()
-        cargarLibros(idAutor!!.toInt()) // Actualizar la lista al volver a la actividad principal
-    }
-
-    private fun cargarLibros(idAutor: Int) {
-        // Verificar que el ID del autor no sea nulo
-        if (idAutor != 0) {
-            // Obtener la lista de libros específicos del autor
-            listaLibroDB = EBaseDeDatos.tablaLibro!!.consultarLibrosPorAutor(idAutor)
-
-            // Configurar el adaptador
-            adaptador = ArrayAdapter(this, android.R.layout.simple_list_item_1, listaLibroDB)
-
-            // Asignar el adaptador al ListView
-            listaLibro.adapter = adaptador
-            adaptador.notifyDataSetChanged()
-        } else {
-            mostrarSnackbar("Error al obtener información del autor")
-        }
-    }
-
-
-
-    fun mostrarSnackbar(texto:String){
-        Snackbar
-            .make(
-                findViewById(R.id.id_layout_desplegar_libros), //view
-                texto, //texto
-                Snackbar.LENGTH_LONG //tiwmpo
-            )
-            .show()
-    }
-
-
-    fun abrirDialogo(){
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("Desea eliminar")
-        builder.setPositiveButton(
-            "Aceptar",
-            DialogInterface.OnClickListener { dialog, which ->
-                val respuesta = EBaseDeDatos.tablaLibro!!.eliminarLibro(listaLibroDB!!.get(posicionItemSeleccionado).idLibro!!.toInt())
-                if (respuesta){
-                    mostrarSnackbar("Libro eliminado exitosamente")
-                    cargarLibros(listaLibroDB!!.get(posicionItemSeleccionado).idAutor!!.toInt())
-                }else{
-                    mostrarSnackbar("Ocurrio un error al momento de eliminar")
-                }
-            }
-        )
-        builder.setNegativeButton(
-            "Cancelar",
-            null
-        )
-
-        val dialogo = builder.create()
-        dialogo.show()
-    }
-    fun irEdicionLibro(clase: Class<*>, datosExtras: Bundle? = null) {
-        val intent = Intent(this, clase)
-        if (datosExtras != null) {
-            intent.putExtras(datosExtras)
+    private fun editarLibro(posicion: Int) {
+        val libroId = listaLibrosIds[posicion]
+        val idAutor = intent.getStringExtra("idAutor")
+        val intent = Intent(this, ActualizarLibro::class.java).apply {
+            putExtra("idLibro", libroId)
+            putExtra("idAutore", idAutor)
         }
         startActivity(intent)
     }
+
+    private fun eliminarLibro(posicion: Int) {
+        val libroId = listaLibrosIds[posicion]
+        BDD.bddAplicacion?.eliminarLibroPorId(intent.getStringExtra("idAutor") ?: return, libroId)
+            ?.addOnSuccessListener {
+                Snackbar.make(findViewById(R.id.id_layout_desplegar_libros), "Libro eliminado exitosamente", Snackbar.LENGTH_LONG).show()
+                val idAutor = intent.getStringExtra("idAutor")
+                idAutor?.let { cargarListaLibros(it) }
+            }
+            ?.addOnFailureListener { e ->
+                Snackbar.make(findViewById(R.id.id_layout_desplegar_libros), "Error al eliminar libro: ${e.message}", Snackbar.LENGTH_LONG).show()
+            }
+    }
+
+
+    // ... Resto del código de la clase DesplegarLibros (métodos onCreateContextMenu, onContextItemSelected, etc.) ...
 }

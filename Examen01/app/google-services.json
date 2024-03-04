@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "311533808565",
+    "project_id": "b2023-gr1acc-jcga",
+    "storage_bucket": "b2023-gr1acc-jcga.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:311533808565:android:3deb094c83adfedf7887fc",
+        "android_client_info": {
+          "package_name": "com.example.examen01"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBp6gBJqk95b9Wi9aKJinJvkM_j0sdC-kA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:311533808565:android:3bbf76b209c632e27887fc",
+        "android_client_info": {
+          "package_name": "com.example.gr1accjcga2023b"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBp6gBJqk95b9Wi9aKJinJvkM_j0sdC-kA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

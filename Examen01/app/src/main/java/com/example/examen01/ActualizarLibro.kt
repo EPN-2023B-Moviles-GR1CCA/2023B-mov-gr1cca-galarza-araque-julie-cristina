@@ -5,92 +5,71 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import com.example.examen01.R
 import com.google.android.material.snackbar.Snackbar
 
 
 class ActualizarLibro : AppCompatActivity() {
+    private lateinit var autorLibroFirestore: AutorLibroFirestore
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_actualizar_libro)
 
-        val idLibro = intent.extras?.getString("idLibro")
-        val idAutor = intent.extras?.getString("idAutor")
+        val idLibro = intent.extras?.getString("idLibro") ?: ""
+        val idAutor = intent.extras?.getString("idAutor") ?: ""
 
-        mostrarSnackbar(idAutor.toString())
+        // Cargar la información existente del libro
+        cargarInfoLibro(idAutor, idLibro)
+        // Inicializa tus vistas aquí
 
-        val idLibroAu = idLibro?.toInt()
-        val idAutorAu = idAutor?.toInt()
+        val botonActualizarLibro = findViewById<Button>(R.id.btn_actualizar_libro)
+        botonActualizarLibro.setOnClickListener {
+            val nuevoTitulo = findViewById<EditText>(R.id.input_titulo).text.toString()
+            val nuevaFechaPublicacion = findViewById<EditText>(R.id.input_fechaPublicacion).text.toString()
+            val nuevoGenero = findViewById<EditText>(R.id.input_genero).text.toString()
+            val nuevoPrecio = findViewById<EditText>(R.id.input_precio).text.toString().toDouble()
+            val esBestSeller = findViewById<EditText>(R.id.input_bestSeller).text.toString().toBoolean()
 
-        val titulo = findViewById<EditText>(R.id.input_titulo)
-        val fecha = findViewById<EditText>(R.id.input_fechaPublicacion)
-        val genero = findViewById<EditText>(R.id.input_genero)
-        val precio = findViewById<EditText>(R.id.input_precio)
-        val bestSeller = findViewById<EditText>(R.id.input_bestSeller)
-
-        if (idLibroAu != null && idAutorAu != null) {
-            val libroEn = EBaseDeDatos.tablaLibro?.consultarLibroPorID(idLibroAu, idAutorAu)
-
-            if (libroEn?.idLibro == 0) {
-                mostrarSnackbar("Libro no encontrado")
-            } else {
-                titulo.setText(libroEn?.titulo)
-                fecha.setText(libroEn?.fechaPublicacion)
-                genero.setText(libroEn?.genero)
-                precio.setText(libroEn?.precio.toString())
-                bestSeller.setText(libroEn?.bestSeller.toString())
-            }
-
-            val botonActualizarLibro = findViewById<Button>(R.id.btn_actualizar_libro)
-            botonActualizarLibro
-                .setOnClickListener{
-                    //val resultBoolean = if (bestSeller.text.toString().toBoolean()) 1 else 0
-                    val respuesta = EBaseDeDatos.tablaLibro!!.actualizarLibro(
-                        idLibroAu,
-                        idAutorAu,
-                        titulo.text.toString(),
-                        fecha.text.toString(),
-                        genero.text.toString(),
-                        precio.text.toString().toDouble(),
-                        bestSeller.text.toString().toBoolean()
-                    )
-
-                    if (respuesta) {
-                        mostrarSnackbar("Libro actualizado con éxito")
-                        val extras = Bundle()
-                        extras.putString("idAutor", idAutor.toString())
-                        irEdicionLibro(DesplegarLibros::class.java, extras)
-                    } else {
-                        mostrarSnackbar("Ocurrió un error al momento de actualizar")
-                    }
-
-
-
-                }
-
-        }
-
-
-
-    }
-    fun mostrarSnackbar(texto:String){
-        Snackbar
-            .make(
-                findViewById(R.id.id_layout_actualizar_libro), //view
-                texto, //texto
-                Snackbar.LENGTH_LONG //tiwmpo
+            // Crear objeto Libro actualizado
+            val libroActualizado = Libro(
+                idLibro = idLibro.toInt(),
+                idAutor = idAutor.toInt(), // Asume que tienes esta propiedad en tu clase Libro
+                titulo = nuevoTitulo,
+                fechaPublicacion = nuevaFechaPublicacion,
+                genero = nuevoGenero,
+                precio = nuevoPrecio,
+                bestSeller = esBestSeller
             )
-            .show()
-    }
-    fun irActividad(clase: Class<*>) {
-        val intent = Intent(this, clase)
-        startActivity(intent)
-    }
-    fun irEdicionLibro(clase: Class<*>, datosExtras: Bundle? = null) {
-        val intent = Intent(this, clase)
-        if (datosExtras != null) {
-            intent.putExtras(datosExtras)
+
+            // Llamar a Firestore para actualizar
+            autorLibroFirestore.actualizarLibroPorId(idAutor, libroActualizado).addOnSuccessListener {
+                Toast.makeText(this, "Libro actualizado correctamente", Toast.LENGTH_LONG).show()
+                // Puedes regresar a la actividad anterior o actualizar la UI aquí
+            }.addOnFailureListener { e ->
+                Toast.makeText(this, "Error al actualizar el libro: ${e.message}", Toast.LENGTH_LONG).show()
+            }
         }
-        startActivity(intent)
+    }
+    private fun cargarInfoLibro(idAutor: String, idLibro: String) {
+        autorLibroFirestore.consultarLibroPorId(idAutor, idLibro).addOnSuccessListener { documento ->
+            if (documento.exists()) {
+                val libro = documento.toObject(Libro::class.java)
+                findViewById<EditText>(R.id.input_titulo).setText(libro?.titulo)
+                findViewById<EditText>(R.id.input_fechaPublicacion).setText(libro?.fechaPublicacion)
+                findViewById<EditText>(R.id.input_genero).setText(libro?.genero)
+                findViewById<EditText>(R.id.input_precio).setText(libro?.precio.toString())
+                findViewById<EditText>(R.id.input_bestSeller).setText(libro?.bestSeller.toString())
+            } else {
+                mostrarSnackbar("Libro no encontrado")
+            }
+        }.addOnFailureListener {
+            mostrarSnackbar("Error al cargar información del libro")
+        }
+    }
+
+    private fun mostrarSnackbar(mensaje: String) {
+        Snackbar.make(findViewById(R.id.id_layout_actualizar_libro), mensaje, Snackbar.LENGTH_LONG).show()
     }
 }

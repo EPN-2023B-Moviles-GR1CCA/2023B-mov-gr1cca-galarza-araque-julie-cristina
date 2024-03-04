@@ -2,29 +2,26 @@ package com.example.examen01
 
 import java.util.Date
 
-class Libro(
-    var idLibro: Int?,
-    var idAutor: Int?,
-    var titulo: String?,
-    var fechaPublicacion: String?,
-    var genero: String?,
-    var precio: Double?,
-    var bestSeller: Boolean?
-) {
+class Libro {
+    var idLibro: Int? = null
+    var idAutor: Int? = null
+    var titulo: String? = null
+    var fechaPublicacion: String? = null
+    var genero: String? = null
+    var precio: Double? = null
+    var bestSeller: Boolean? = null
 
-    override fun toString(): String {
+    // Constructor sin argumentos requerido por Firebase
+    constructor()
 
-        return """
-        Libro Details:
-        ID: $idLibro
-        ID Autor: $idAutor
-        Título del libro: $titulo
-        Fecha de Publicación: $fechaPublicacion
-        Genero: $genero
-        Precio: $precio
-        Best Seller: $bestSeller
-    """.trimIndent()
+    // Constructor con argumentos para uso general
+    constructor(idLibro: Int, idAutor: Int, titulo: String, fechaPublicacion: String, genero: String, precio: Double, bestSeller: Boolean) {
+        this.idLibro = idLibro
+        this.idAutor = idAutor
+        this.titulo = titulo
+        this.fechaPublicacion = fechaPublicacion
+        this.genero = genero
+        this.precio = precio
+        this.bestSeller = bestSeller
     }
-
-
 }
